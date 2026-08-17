@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard | Aevum{% endblock %}
+{% block content %}
+<section class="hero-card rounded-5 p-4 mb-4">
+  <div class="d-flex flex-wrap justify-content-between gap-3 align-items-center">
+    <div>
+      <h1 class="fw-bold mb-2">Welcome back, {{ user.username }}</h1>
+      <p class="text-secondary mb-0">Manage academics, code, productivity, and public sharing from one premium workspace.</p>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+      <a class="btn btn-premium" href="{% url 'note-create' %}">New Note</a>
+      <a class="btn btn-outline-light" href="{% url 'snippet-create' %}">New Snippet</a>
+    </div>
+  </div>
+</section>
+<div class="row g-3 mb-4">
+  <div class="col-md-3"><div class="mini-dashboard-card"><span>Notes</span><strong>{{ stats.notes }}</strong></div></div>
+  <div class="col-md-3"><div class="mini-dashboard-card"><span>Tasks Done</span><strong>{{ stats.tasks_done }}</strong></div></div>
+  <div class="col-md-3"><div class="mini-dashboard-card"><span>GitHub Uploads</span><strong>{{ stats.github_uploaded }}</strong></div></div>
+  <div class="col-md-3"><div class="mini-dashboard-card"><span>Streak</span><strong>{{ stats.streak }} day{{ stats.streak|pluralize }}</strong></div></div>
+</div>
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="glass-panel p-4 rounded-5 h-100">
+      <h3 class="fw-bold mb-3">Academic Activity Overview</h3>
+      <canvas id="statsChart" height="130"></canvas>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="feature-card h-100">
+      <h3 class="fw-bold mb-3">Upcoming Events</h3>
+      {% for event in events %}
+      <div class="d-flex justify-content-between border-bottom py-2"><span>{{ event.title }}</span><span class="text-secondary">{{ event.start_date }}</span></div>
+      {% empty %}<p class="text-secondary">No events yet.</p>{% endfor %}
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="feature-card h-100">
+      <h3 class="fw-bold mb-3">Recent Notes</h3>
+      {% for note in recent_notes %}<div class="d-flex justify-content-between py-2 border-bottom"><a href="{% url 'note-detail' note.pk %}">{{ note.title }}</a><span>{% if note.is_pinned %}📌{% endif %}</span></div>{% empty %}<p class="text-secondary">No notes yet.</p>{% endfor %}
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="feature-card h-100">
+      <h3 class="fw-bold mb-3">Recent Code Snippets</h3>
+      {% for snippet in recent_snippets %}<div class="d-flex justify-content-between py-2 border-bottom"><a href="{% url 'snippet-detail' snippet.pk %}">{{ snippet.title }}</a><span>{% if snippet.github_uploaded %}GitHub ✓{% endif %}</span></div>{% empty %}<p class="text-secondary">No snippets yet.</p>{% endfor %}
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="glass-panel p-4 rounded-5">
+      <h3 class="fw-bold mb-3">Consistency Heatmap</h3>
+      <div class="heatmap-grid">
+        {% for item in heatmap_days %}
+        <div class="heat level-{{ item.level }}" title="{{ item.date }}: {{ item.count }} activity"></div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+const ctx = document.getElementById('statsChart');
+if (ctx) {
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['To Do', 'Doing', 'Done', 'Notes', 'Snippets'],
+      datasets: [{ data: [{{ stats.tasks_todo }}, {{ stats.tasks_doing }}, {{ stats.tasks_done }}, {{ stats.notes }}, {{ stats.snippets }}], backgroundColor: ['#f59e0b','#06b6d4','#10b981','#8b5cf6','#ec4899'] }]
+    },
+    options: { plugins: { legend: { labels: { color: '#dbe4ff' } } } }
+  });
+}
+</script>
+{% endblock %}

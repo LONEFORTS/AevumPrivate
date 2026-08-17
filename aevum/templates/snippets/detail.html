@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}{{ snippet.title }} | Aevum{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+  <div>
+    <h1 class="fw-bold mb-1">{{ snippet.title }}</h1>
+    <p class="text-secondary mb-0">Language: {{ snippet.language|upper }}</p>
+  </div>
+  <div class="d-flex gap-2 flex-wrap">
+    <a class="btn btn-outline-light" href="{% url 'snippet-update' snippet.pk %}">Edit</a>
+    <a class="btn btn-outline-light" href="{% url 'share-snippet' snippet.pk %}">Share</a>
+    <a class="btn btn-outline-light" href="{% url 'snippet-publish' snippet.pk %}">Upload to GitHub</a>
+    <a class="btn btn-danger" href="{% url 'snippet-delete' snippet.pk %}">Delete</a>
+  </div>
+</div>
+<div class="glass-panel p-4 rounded-5 mb-4">
+  {% if snippet.code_file %}<p><strong>Uploaded file:</strong> <a href="{{ snippet.code_file.url }}">Download code file</a></p>{% endif %}
+  {% if snippet.github_url %}<p><strong>GitHub URL:</strong> <a href="{{ snippet.github_url }}">{{ snippet.github_url }}</a></p>{% endif %}
+  <pre class="code-block"><code>{{ snippet.display_content }}</code></pre>
+</div>
+{% endblock %}

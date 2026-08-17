@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Search | Aevum{% endblock %}
+{% block content %}
+<div class="glass-panel p-4 rounded-5 mb-4">
+  <form class="row g-2" method="get">
+    <div class="col-md-10"><input type="text" name="q" value="{{ query }}" class="form-control form-control-lg" placeholder="Search notes, tasks, events, snippets"></div>
+    <div class="col-md-2"><button class="btn btn-premium w-100 btn-lg">Search</button></div>
+  </form>
+</div>
+<div class="row g-4">
+  <div class="col-md-6"><div class="feature-card h-100"><h3>Notes</h3>{% for item in notes %}<div><a href="{% url 'note-detail' item.pk %}">{{ item.title }}</a></div>{% empty %}<p class="text-secondary">No note results.</p>{% endfor %}</div></div>
+  <div class="col-md-6"><div class="feature-card h-100"><h3>Tasks</h3>{% for item in tasks %}<div>{{ item.title }}</div>{% empty %}<p class="text-secondary">No task results.</p>{% endfor %}</div></div>
+  <div class="col-md-6"><div class="feature-card h-100"><h3>Events</h3>{% for item in events %}<div>{{ item.title }}</div>{% empty %}<p class="text-secondary">No event results.</p>{% endfor %}</div></div>
+  <div class="col-md-6"><div class="feature-card h-100"><h3>Code Snippets</h3>{% for item in snippets %}<div><a href="{% url 'snippet-detail' item.pk %}">{{ item.title }}</a></div>{% empty %}<p class="text-secondary">No snippet results.</p>{% endfor %}</div></div>
+</div>
+{% endblock %}

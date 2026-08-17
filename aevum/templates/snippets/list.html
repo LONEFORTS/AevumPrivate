@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Code Vault | Aevum{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4"><h1 class="fw-bold mb-0">Code Vault</h1><a class="btn btn-premium" href="{% url 'snippet-create' %}">Create Snippet</a></div>
+<div class="row g-4">
+{% for snippet in snippets %}
+  <div class="col-md-6 col-xl-4">
+    <div class="feature-card h-100">
+      <div class="d-flex justify-content-between align-items-start gap-2">
+        <div>
+          <h3 class="h5 mb-1"><a href="{% url 'snippet-detail' snippet.pk %}">{{ snippet.title }}</a></h3>
+          <p class="text-secondary small mb-2">{{ snippet.language|upper }}</p>
+        </div>
+        <div>{% if snippet.github_uploaded %}<span class="badge text-bg-success">GitHub</span>{% endif %}{% if snippet.is_public %}<span class="badge text-bg-info">Public</span>{% endif %}</div>
+      </div>
+      <pre class="code-preview">{{ snippet.display_content|truncatechars:180 }}</pre>
+    </div>
+  </div>
+{% empty %}
+  <div class="col-12"><div class="feature-card"><p class="mb-0 text-secondary">No snippets yet. Upload source files or paste code to start.</p></div></div>
+{% endfor %}
+</div>
+{% endblock %}

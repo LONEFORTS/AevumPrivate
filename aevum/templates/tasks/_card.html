@@ -1,0 +1,16 @@
+<div class="task-card priority-{{ task.priority }}">
+  <div class="d-flex justify-content-between align-items-start gap-2">
+    <div>
+      <h4 class="h6 mb-1">{{ task.title }}</h4>
+      <p class="small text-secondary mb-2">{{ task.description|default:'No description' }}</p>
+      <span class="badge text-bg-dark">{{ task.priority|title }}</span>
+      {% if task.due_date %}<span class="badge text-bg-secondary">Due {{ task.due_date }}</span>{% endif %}
+    </div>
+    <a class="text-light" href="{% url 'task-update' task.pk %}"><i class="bi bi-pencil-square"></i></a>
+  </div>
+  <div class="d-flex gap-2 flex-wrap mt-3">
+    <a class="btn btn-sm btn-outline-light" href="{% url 'task-move' task.pk 'todo' %}">To Do</a>
+    <a class="btn btn-sm btn-outline-light" href="{% url 'task-move' task.pk 'doing' %}">Doing</a>
+    <a class="btn btn-sm btn-outline-light" href="{% url 'task-move' task.pk 'done' %}">Done</a>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} | Aevum{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-xl-9">
+    <div class="glass-panel p-4 rounded-5">
+      <h1 class="fw-bold mb-4">{{ title }}</h1>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="mb-3">
+          <label class="form-label">{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}<div class="text-danger small mt-1">{{ field.errors|join:', ' }}</div>{% endif %}
+        </div>
+        {% endfor %}
+        <div class="d-flex gap-2 flex-wrap">
+          <button class="btn btn-premium">Save Note</button>
+          <a class="btn btn-outline-light" href="{% url 'tag-create' %}">Create Tag First</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

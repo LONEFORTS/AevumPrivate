@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Share | Aevum{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="glass-panel p-4 rounded-5">
+      <h1 class="fw-bold mb-3">Public Share Link Ready</h1>
+      <p class="text-secondary">Copy this link and send it to your external checker.</p>
+      <div class="p-3 rounded-4 bg-dark-subtle text-break mb-3">{{ share_url }}</div>
+      <a class="btn btn-premium" href="{{ share_url }}" target="_blank">Open Public Link</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

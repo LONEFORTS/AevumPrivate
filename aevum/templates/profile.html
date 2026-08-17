@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Profile | Aevum{% endblock %}
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="feature-card h-100">
+      <h3 class="fw-bold">Profile Summary</h3>
+      <p><strong>Username:</strong> {{ user.username }}</p>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>GitHub Repo:</strong> {{ profile.github_username }}/{{ profile.github_repo }}</p>
+      <p class="text-secondary">Fill GitHub token and repository here to enable one-tap snippet upload.</p>
+    </div>
+  </div>
+  <div class="col-lg-8">
+    <div class="glass-panel p-4 rounded-5">
+      <h2 class="fw-bold mb-4">Edit Profile and GitHub Settings</h2>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row g-3">
+          {% for field in form %}
+          <div class="col-md-6 {% if field.name == 'bio' %}col-12{% endif %}">
+            <label class="form-label">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}<div class="text-danger small mt-1">{{ field.errors|join:', ' }}</div>{% endif %}
+          </div>
+          {% endfor %}
+        </div>
+        <button class="btn btn-premium mt-4">Save Profile</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
